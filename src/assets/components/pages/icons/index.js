@@ -1,0 +1,14 @@
+import Envelope from '../icons/envelop.png';
+import Lock from '../icons/lock.gif';
+import Google from '../icons/google.png';
+import Closed from '../icons/closedeye.png';
+import Open from '../icons/openeye.png';
+import Home from '../icons/home.png';
+import Person from '../icons/person.png';
+import Location from '../icons/location.png';
+import Call from '../icons/call.png';
+import ID from '../icons/id.png';
+import Mpesa from '../icons/mpesa.png';
+import Show from '../icons/show.png';
+import Hide from '../icons/hide.png';
+export { Lock, Envelope, Google, Closed, Open, Home, Person, Location, Call, ID, Mpesa, Show, Hide };

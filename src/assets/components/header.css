@@ -1,0 +1,16 @@
+.header{
+    height: 8vh;
+    width: 100%;
+    position: fixed;
+    background: white;
+    display: flex;
+}
+.logo{
+    height: 50px;
+    width: 50px;
+    border-radius: 100%;
+}
+.header p{
+    color: white;
+    font-weight: 1000;
+}

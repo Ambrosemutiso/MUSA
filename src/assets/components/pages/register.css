@@ -1,0 +1,117 @@
+.register{
+    width: 100%;
+    height: 120vh;
+    background: linear-gradient(180deg, #0af172 0%, #32c95f22 60%);
+    mask-border-slice: 50px;
+    padding-top: 50px;
+    padding-bottom: 30px;
+}
+.register-container{
+    width:580px;
+    height: 110vh;
+    background: white;
+    margin: auto;
+    padding: 40px 60px 20px;
+    border-radius: 160px 30px ;
+    align-items: center;
+    justify-content: center;
+    box-shadow: #487948;
+}
+.register-container h2{
+    margin: 20px 0px 50px;
+}
+.register-fields{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-top: 10px;
+}
+.register-fields input{
+    height: 20px;
+    width: 80%;
+    padding-left: 20px;
+    border: 1px solid #c9c9c9;
+    outline: none;
+    color: #5c5c5c;
+    font-size: 18px;
+}
+.register-container button{
+    width: 400px;
+    height: 30px;
+    color: white;
+    background: #03d35a;
+    margin-left: 13%;
+    border: none;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 50px;
+}
+.loginsignup-login{
+    margin-top: 20px;
+    color: #5c5f5c;
+    font-size: 18px;
+    font-weight: 500;
+}
+.loginsignup-login span{
+    color: #ff4141;
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.loginsignup-agree{
+    display: flex;
+    align-items: center;
+    margin-top: 25px;
+    gap: 20px;
+    color: #5c5c5c;
+    font-size: 18px;
+    font-weight: 500;
+}
+.head{
+    justify-content: center;
+    align-items: center;
+}
+.reg{
+    font-size: 30px;
+    font-weight: 700;
+    align-content: center;
+    margin-left: 37%;
+    display: flex;
+    flex-direction: row;
+}
+.topdiv{
+    width: 100%;
+    height: 1px;
+    background-color: #03d35a;
+    border-radius: 50px 0px 0px 50px;
+    display: flex;
+    flex-direction: row;
+}
+.user-profile{
+    height: 70px;
+    width: 70px;
+    cursor: pointer;
+}
+.tel{
+    display:flex;
+}
+.pass{
+    display: flex;
+}
+.upload{
+    margin-left: 40%;
+}
+.upload p{
+    font-weight: 600;
+    font-size: 20px;
+}
+.details{
+    display: flex;
+}
+.year{
+    display: flex;
+}
+.span{
+    color: green;
+}
