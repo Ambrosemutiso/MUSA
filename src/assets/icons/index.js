@@ -1,0 +1,14 @@
+import Envelope from './envelop.png';
+import Lock from './lock.gif';
+import Google from './google.png';
+import Closed from './closedeye.png';
+import Open from './openeye.png';
+import Home from './home.png';
+import Person from './person.png';
+import Location from './location.png';
+import Call from './call.png';
+import ID from './id.png';
+import Mpesa from './mpesa.png';
+import Show from './show.png';
+import Hide from './hide.png';
+export { Lock, Envelope, Google, Closed, Open, Home, Person, Location, Call, ID, Mpesa, Show, Hide };
