@@ -86,7 +86,7 @@ const LoginSignup = () => {
 
     if (responseData.success) {
       localStorage.setItem('auth-token', responseData.token);
-      window.location.replace("/");
+      window.location.replace("/frontend");
     } else {
       alert(responseData.errors);
     }
@@ -146,8 +146,8 @@ const LoginSignup = () => {
           />
         </div>
 
-        <p className="ml-11">Already have an account? <Link {...fadeInOut} to="/" className="text-green-400 underline">login here</Link></p>
-        <p className="ml-11">Not yet paid registration fee? <Link {...fadeInOut} to="/pay-registration-fee" className="text-green-400 underline">click here</Link></p>
+        <p className="ml-11">Already have an account? <Link {...fadeInOut} to="/frontend" className="text-green-400 underline">login here</Link></p>
+        <p className="ml-11">Not yet paid registration fee? <Link {...fadeInOut} to="/frontend/pay-registration-fee" className="text-green-400 underline">click here</Link></p>
 
         <div className="flex items-center gap-2 mt-4">
           <input type="checkbox" name="check" id="right" required />

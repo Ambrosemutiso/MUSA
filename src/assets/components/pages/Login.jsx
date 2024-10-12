@@ -76,7 +76,7 @@ const Login = () => {
 
     if (responseData.success) {
         localStorage.setItem('auth-token', responseData.token);
-        window.location.replace('/candidates'); // Redirect to the candidates page after successful login
+        window.location.replace('/frontend/candidates'); // Redirect to the candidates page after successful login
     } else {
         alert(responseData.errors); // Show the error message, including if account is pending
     }
@@ -130,7 +130,7 @@ const Login = () => {
           <div className="flex justify-end py-2 w-full">
           Doesnt have an account?
             <Link 
-              to='/signup'
+              to='/frontend/signup'
               className="text-white underline hover:text-green-400 transition"
             >
               Signup here
