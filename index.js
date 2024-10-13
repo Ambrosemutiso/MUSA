@@ -7,13 +7,14 @@ const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const path = require("path");
 const cors = require("cors");
-const http = require("http").createServer(app);
-const io = require("socket.io")(http);
+const https = require("https").createServer(app);
+const io = require("socket.io")(httpsServer);
 const nodemailer = require("nodemailer");
 const { google } = require("googleapis");
 const bcrypt = require("bcrypt");
 const fs = require('fs');
 require('dotenv').config();
+
 
 // Ensure upload directory exists
 const uploadDir = './upload/images';
@@ -840,9 +841,10 @@ app.post('/adminlogin', async (req, res) => {
 });
 
 // Start server
-http.listen(port, (error) => {
+// Start HTTPS server
+https.listen(port, (error) => {
     if (!error) {
-        console.log("Server Running on Port " + port);
+        console.log("HTTPS Server Running on Port " + port);
     } else {
         console.log("Error : " + error);
     }
