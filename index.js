@@ -1,4 +1,4 @@
-const port = 4000;
+const port = 4000; 
 const express = require("express");
 const app = express();
 const axios = require('axios');
@@ -12,34 +12,32 @@ const io = require("socket.io")(http);
 const nodemailer = require("nodemailer");
 const { google } = require("googleapis");
 const bcrypt = require("bcrypt");
+const fs = require('fs');
 require('dotenv').config();
 
-// Serve static files from the Admin build
-app.use('/admin', express.static(path.join(__dirname, '../Admin/admin/build')));
+// Ensure upload directory exists
+const uploadDir = './upload/images';
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
 
-// Serve static files from the User (Frontend) build
-app.use('/user', express.static(path.join(__dirname, '../Frontend/user/build')));
-
-// Fallback route to serve User frontend's index.html
-app.get('/user/*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../Frontend/user/build', 'index.html'));
-});
-
-// Fallback route to serve Admin frontend's index.html
-app.get('/admin/*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../Admin/admin/build', 'index.html'));
-});
-
-// Example API route
-app.get('/api/example', (req, res) => {
-  res.json({ message: "API working" });
-});
-
-//server configuration
+// Middleware and configuration
 app.use(express.json());
-app.use(cors());
 
-// Database Connection with MongoDB
+// HTTPS redirect middleware
+app.use((req, res, next) => {
+    if (req.secure) {
+        return next();
+    }
+    res.redirect(`https://${req.headers.host}${req.url}`);
+});
+
+// CORS configuration
+app.use(cors({
+    origin: 'https://officialmusamakueni.co.ke', // Add other origins if needed
+}));
+
+// MongoDB connection
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -48,30 +46,33 @@ mongoose.connect(process.env.MONGO_URI, {
 }).catch(err => {
     console.error("MongoDB connection error: ", err);
 });
-// API creation
-app.get("/", (req,res) => {
+
+// Basic API route
+app.get("/", (req, res) => {
     res.send("Express App is Running");
 });
 
-// Image Storage Engine
+// Multer storage configuration
 const storage = multer.diskStorage({
     destination: './upload/images',
-    filename:(req,file,cb) => {
-        return cb(null,`${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
-    } 
+    filename: (req, file, cb) => {
+        return cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`);
+    }
 });
 
-const upload = multer({storage:storage})
+const upload = multer({ storage: storage });
 
-// Creating Upload Endpoint of candidates Images
+// Serving static images
 app.use('/images', express.static(path.join(__dirname, 'upload/images')));
 
-app.post('/upload',upload.single('candidate'),(req,res) => {
+// File upload endpoint
+app.post('/upload', upload.single('candidate'), (req, res) => {
     res.json({
-        success:1,
-        image_url: `http://localhost:${port}/images/${req.file.filename}`
-    })
+        success: 1,
+        image_url: `https://officialmusamakueni.co.ke/images/${req.file.filename}` // Removed port from URL
+    });
 });
+
 
 // Schema for creating candidates
 const Candidate = mongoose.model("candidates", {
@@ -398,7 +399,7 @@ app.post('/login', async (req, res) => {
 async function sendPasswordResetEmail(userEmail, userName, resetToken) {
     try {
         const accessToken = await oAuth2Client.getAccessToken();
-        const resetLink = `http://localhost:3000/password/${resetToken}`;
+        const resetLink = `https://officialmusamakueni.co.ke/frontend/password/${resetToken}`;
 
         let transporter = nodemailer.createTransport({
             service: 'gmail',
@@ -779,8 +780,8 @@ app.post('/adminlogin', async (req, res) => {
         res.json({ success: false, errors: "Wrong Email Id" });
     }
 });
-        
-//creating server connection at port 4000
+
+// Start server
 http.listen(port, (error) => {
     if (!error) {
         console.log("Server Running on Port " + port);
