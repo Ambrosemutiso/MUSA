@@ -56,7 +56,7 @@ const AddCandidate = () => {
 
     let formData = new FormData();
     formData.append('candidate', image);
-    await fetch('https://officialmusamakueni.co.ke/api/upload', {
+    await fetch('https://api.officialmusamakueni.co.ke/upload', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -67,7 +67,7 @@ const AddCandidate = () => {
     if (responseData.success) {
       candidate.image = responseData.image_url;
       console.log(candidate);
-      await fetch('https://officialmusamakueni.co.ke/api/addcandidate', {
+      await fetch('https://api.officialmusamakueni.co.ke/addcandidate', {
         method: 'POST',
         headers: {
           Accept: 'application/json',

@@ -8,25 +8,25 @@ import Results from '../Img/results.jpg';
 const Sidebar = () => {
   return (
     <div className='sidebar bg-green-700'>
-      <Link to={'/admin/addcandidate'} style={{textDecoration:"none"}}>
+      <Link to={'/addcandidate'} style={{textDecoration:"none"}}>
       <div className="sidebar-item">
         <img src={Add} alt="" className="icon"/>
         <p>Add</p>
       </div>
       </Link>
-      <Link to={'/admin/approveuser'} style={{textDecoration:"none"}}>
+      <Link to={'/approveuser'} style={{textDecoration:"none"}}>
       <div className="sidebar-item">
         <img src={Add} alt="" className="icon"/>
         <p>Approve</p>
       </div>
       </Link>
-      <Link to={'/admin/listcandidates'} style={{textDecoration:"none"}}>
+      <Link to={'/listcandidates'} style={{textDecoration:"none"}}>
       <div className="sidebar-item">
         <img src={Folders} alt="" className="icon"/>
         <p>Candidates</p>
       </div>
       </Link> 
-      <Link to={'/admin/results'} style={{textDecoration:"none"}}>
+      <Link to={'/results'} style={{textDecoration:"none"}}>
       <div className="sidebar-item">
         <img src={Results} alt="" className="icon" />
         <p>Results</p>

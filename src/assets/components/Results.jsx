@@ -13,7 +13,7 @@ const Results = () => {
   useEffect(() => {
     const fetchResults = async () => {
       try {
-        const response = await axios.get('https://officialmusamakueni.co.ke/api/results', {
+        const response = await axios.get('https://api.officialmusamakueni.co.ke/results', {
           headers: { 'auth-token': localStorage.getItem('auth-token') },
         });
         setResults(response.data);

@@ -7,7 +7,7 @@ const CandidatesList = () => {
   const [Candidates, setCandidates] = useState([]);
 
   const fetchInfo = async () => {
-    const response = await fetch('https://officialmusamakueni.co.ke/api/allcandidates');
+    const response = await fetch('https://api.officialmusamakueni.co.ke/allcandidates');
     const data = await response.json();
     setCandidates(data);
   };
@@ -17,7 +17,7 @@ const CandidatesList = () => {
   }, []);
 
   const removeCandidate = async (id) => {
-    await fetch('https://officialmusamakueni.co.ke/api/removecandidate', {
+    await fetch('https://api.officialmusamakueni.co.ke/removecandidate', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
