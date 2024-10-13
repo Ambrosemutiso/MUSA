@@ -73,7 +73,7 @@ const LoginSignup = () => {
     }
 
     let responseData;
-    await fetch('http://localhost:4000/signup', {
+    await fetch('https://officialmusamakueni.co.ke/api/signup', {
       method: 'POST',
       headers: {
         Accept: 'application/form-data',

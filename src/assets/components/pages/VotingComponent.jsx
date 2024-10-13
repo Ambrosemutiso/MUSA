@@ -19,19 +19,19 @@ const VotingComponent = () => {
     const fetchData = async () => {
       try {
         // Fetch user info
-        const userResponse = await axios.get('http://localhost:4000/user', {
+        const userResponse = await axios.get('https://officialmusamakueni.co.ke/api/user', {
           headers: { 'auth-token': localStorage.getItem('auth-token') }
         });
         setUserName(userResponse.data.name || 'User');
 
         // Fetch candidates
-        const candidatesResponse = await axios.get('http://localhost:4000/candidates', {
+        const candidatesResponse = await axios.get('https://officialmusamakueni.co.ke/api/candidates', {
           headers: { 'auth-token': localStorage.getItem('auth-token') }
         });
         setCandidates(candidatesResponse.data);
 
         // Fetch voted positions
-        const votesResponse = await axios.get('http://localhost:4000/votes', {
+        const votesResponse = await axios.get('https://officialmusamakueni.co.ke/api/votes', {
           headers: { 'auth-token': localStorage.getItem('auth-token') }
         });
         setVotedPositions(votesResponse.data.votedPositions || []);
@@ -76,7 +76,7 @@ const VotingComponent = () => {
   const Vote = async (candidateId, position) => {
     setLoading(true);
     try {
-      const response = await axios.post('http://localhost:4000/vote', {
+      const response = await axios.post('https://officialmusamakueni.co.ke/api/vote', {
         candidateId,
         position,
       }, {

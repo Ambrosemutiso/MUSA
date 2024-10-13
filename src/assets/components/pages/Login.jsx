@@ -63,7 +63,7 @@ const Login = () => {
     console.log('Login Function Executed', formData);
     let responseData;
     
-    await fetch('http://localhost:4000/login', {
+    await fetch('https://officialmusamakueni.co.ke/api/login', {
         method: 'POST',
         headers: {
             Accept: 'application/form-data',
@@ -76,9 +76,9 @@ const Login = () => {
 
     if (responseData.success) {
         localStorage.setItem('auth-token', responseData.token);
-        window.location.replace('/frontend/candidates'); // Redirect to the candidates page after successful login
+        window.location.replace('/frontend/candidates');
     } else {
-        alert(responseData.errors); // Show the error message, including if account is pending
+        alert(responseData.errors); 
     }
   };
 
@@ -121,7 +121,7 @@ const Login = () => {
           />
           <div className="flex justify-end py-2 w-full">
             <Link 
-              to='/reset'
+              to='/frontend/reset'
               className="text-white underline hover:text-green-400 transition"
             >
               Forgot Password?
