@@ -307,38 +307,91 @@ async function sendUserIdEmail(userEmail, userName, userId) {
             pool: true,
             rateLimit: 1
         });
-
         let mailOptions = {
             from: process.env.USER_EMAIL,
             to: userEmail,
-            subject: 'Your MUSA membership for the year 2024/25',
+            subject: 'Your MUSA Membership for the Year 2024/25',
             html: `
-                <html>
-                <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-                    <div style="
+            <html>
+            <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+                <div style="
                     max-width: 600px; 
                     margin: 0 auto; 
                     padding: 20px; 
                     border: 1px solid #ddd; 
-                    border-radius: 5px; 
-                    background-color: #f9f9f9;
-                    ">
-                        <h2 style="color: #007bff;">Hello, ${userName}</h2>
-                        <p>I hope this message finds you well.</p>
-                        <p><strong>Your MUSA Registration number is: ${userId}</strong></p>
-                        <p>Please take a moment to carefully review the details below:</p>
-                        <ul>
-                            <li>This registration number will be used as your first time login password.</li>
-                            <li>Contact us immediately if you believe this message has been received in error.</li>
-                        </ul>
-                        <p>If you have any questions or require further clarification, please don't hesitate to reach out to us directly via officialmusa.makueni017@gmail.com.</p>
-                        <p>Best regards,</p>
-                        <p><strong>MUSA TECH TEAM</strong></p>
-                        <p><strong>Unity, Vision & Progress</strong></p>
+                    border-radius: 10px; 
+                    background-color: #f9f9f9;">
+                    
+                    <!-- Logo Section -->
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <img src="LOGO_URL" alt="MUSA Logo" style="width: 150px; height: auto;"/>
                     </div>
-                </body>
-                </html>`
+                    
+                    <!-- Email Heading -->
+                    <h2 style="text-align: center; color: #007bff;">Hello, ${userName}</h2>
+                    <p style="text-align: center; font-size: 18px; color: #2d3748;">
+                        I hope this message finds you well.
+                    </p>
+        
+                    <!-- Membership Details -->
+                    <div style="background-color: #e0f7e0; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+                        <h3 style="color: #008000; text-align: center;">
+                            <strong>Your MUSA Registration Number:</strong>
+                        </h3>
+                        <p style="font-size: 20px; text-align: center; color: #006400;">
+                            <strong>${userId}</strong>
+                        </p>
+                    </div>
+        
+                    <!-- Important Information -->
+                    <p style="font-size: 16px; color: #333;">
+                        <strong>Please note the following:</strong>
+                    </p>
+                    <ul style="font-size: 16px; color: #333; padding-left: 20px;">
+                        <li>This registration number will be used as your first-time login password.</li>
+                        <li>Contact us immediately if you believe this message has been received in error.</li>
+                    </ul>
+        
+                    <!-- Footer and Contact Information -->
+                    <p style="font-size: 16px; color: #333;">
+                        If you have any questions or require further clarification, please don't hesitate to reach out to us directly via <a href="mailto:officialmusa.makueni017@gmail.com" style="color: #007bff; text-decoration: none;">officialmusa.makueni017@gmail.com</a>.
+                    </p>
+        
+                    <p style="text-align: center; font-size: 18px; color: #2d3748;">
+                        Best regards,
+                    </p>
+                    <p style="text-align: center; font-size: 18px; color: #2d3748;">
+                        <strong>MUSA Tech Team</strong>
+                    </p>
+        
+                    <!-- Slogan or Motto -->
+                    <div style="text-align: center; padding: 10px; background-color: #f9f9f9; border-top: 1px solid #ddd;">
+                        <p style="font-size: 16px; font-weight: bold; color: #2d3748;">
+                            <span style="color: #008000;">Unity</span>, <span style="color: #007bff;">Vision</span> & <span style="color: #ffcc00;">Progress</span>
+                        </p>
+                    </div>
+        
+                    <!-- Social Media Icons -->
+                    <div style="text-align: center; margin-top: 20px;">
+                        <a href="https://www.facebook.com/musamakueni" style="margin-right: 15px;">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook" style="width: 30px; height: 30px;">
+                        </a>
+                        <a href="https://www.twitter.com/MUSA_makueni017?t=LTZiDkJ9vfNuSGwZvkLCbg&s=09" style="margin-right: 15px;">
+                            <img src="https://upload.wikimedia.org/wikipedia/en/6/60/Twitter_Logo_as_of_2021.svg" alt="Twitter" style="width: 30px; height: 30px;">
+                        </a>
+                        <a href="https://www.instagram.com/makueni_comrades?igshid=OGQ5ZDc2ODk22ZA==" style="margin-right: 15px;">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" style="width: 30px; height: 30px;">
+                        </a>
+                        <a href="https://www.linkedin.com/company/makueni-university-students-association-musa/">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" alt="LinkedIn" style="width: 30px; height: 30px;">
+                        </a>
+                    </div>
+                </div>
+            </body>
+            </html>
+            `
         };
+         
 
         let result = await transporter.sendMail(mailOptions);
         return result;
@@ -415,18 +468,31 @@ async function sendPasswordResetEmail(userEmail, userName, resetToken) {
             html: `
             <html>
             <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-            <div style="
-            max-width: 600px; 
-            margin: 0 auto; 
-            padding: 20px; 
-            border: 1px solid #ddd; 
-            border-radius: 5px; 
-            background-color: #f9f9f9;
-            ">
-                <h2 style="color: #007bff;">Hello, ${userName}</h2>
-                    <p>You have requested to reset your password. Please click the link below to reset it:</p>
-                    <p><a href="${resetLink}">Reset Password</a></p>
+                <div style="
+                    max-width: 600px; 
+                    margin: 0 auto; 
+                    padding: 20px; 
+                    border: 1px solid #ddd; 
+                    border-radius: 10px; 
+                    background-color: #f9f9f9;">
+                    <h2 style="text-align: center; color: #007bff;">Hello, ${userName}</h2>
+                    <p style="text-align: center; font-size: 18px; color: #2d3748;">You have requested to reset your password. Please click the link below to reset it:</p>
+                    <p style="text-align: center; font-size: 18px; color: #2d3748;"><a href="${resetLink}">Reset Password</a></p>
                     <p>This link will expire in 1 hour.</p>
+                                        <p style="text-align: center; font-size: 18px; color: #2d3748;">
+                        Best regards,
+                    </p>
+                    <p style="text-align: center; font-size: 18px; color: #2d3748;">
+                        <strong>MUSA Tech Team</strong>
+                    </p>
+        
+                    <!-- Slogan or Motto -->
+                    <div style="text-align: center; padding: 10px; background-color: #f9f9f9; border-top: 1px solid #ddd;">
+                        <p style="font-size: 16px; font-weight: bold; color: #2d3748;">
+                            <span style="color: #008000;">Unity</span>, <span style="color: #007bff;">Vision</span> & <span style="color: #ffcc00;">Progress</span>
+                        </p>
+                    </div>
+                </div>
                 </body>
                 </html>`,
         };        
