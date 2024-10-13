@@ -27,7 +27,9 @@ app.use(express.json());
 
 // CORS configuration
 app.use(cors({
-    origin: 'https://officialmusamakueni.co.ke', // Add other origins if needed
+    origin: 'https://officialmusamakueni.co.ke',
+    'https"//user.officialmusamakueni.co.ke',
+    'https://admin.officialmusamakueni.co.ke'
 }));
 
 // MongoDB connection
@@ -445,7 +447,7 @@ app.post('/login', async (req, res) => {
 async function sendPasswordResetEmail(userEmail, userName, resetToken) {
     try {
         const accessToken = await oAuth2Client.getAccessToken();
-        const resetLink = `https://officialmusamakueni.co.ke/frontend/password/${resetToken}`;
+        const resetLink = `https://user.officialmusamakueni.co.ke/password/${resetToken}`;
 
         let transporter = nodemailer.createTransport({
             service: 'gmail',
