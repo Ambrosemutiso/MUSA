@@ -24,14 +24,6 @@ if (!fs.existsSync(uploadDir)) {
 // Middleware and configuration
 app.use(express.json());
 
-// HTTPS redirect middleware
-app.use((req, res, next) => {
-    if (req.secure) {
-        return next();
-    }
-    res.redirect(`https://${req.headers.host}${req.url}`);
-});
-
 // CORS configuration
 app.use(cors({
     origin: 'https://officialmusamakueni.co.ke', // Add other origins if needed
