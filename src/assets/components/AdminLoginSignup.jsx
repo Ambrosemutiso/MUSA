@@ -34,7 +34,7 @@ const AdminLoginSignup = () => {
       const signup = async () => {
         console.log('Signup Function Executed', formData);
         let responseData;
-        await fetch('http://localhost:4000/adminsignup', {
+        await fetch('https://officialmusamakueni.co.ke/api/adminsignup', {
           method: 'POST',
           headers: {
             Accept: 'application/form-data',
@@ -47,7 +47,7 @@ const AdminLoginSignup = () => {
 
         if (responseData.success) {
           localStorage.setItem('auth-token', responseData.token);
-          window.location.replace('/');
+          window.location.replace('/admin/adminsignup');
         } else {
           alert(responseData.errors);
         }
@@ -58,7 +58,7 @@ const AdminLoginSignup = () => {
       const login = async () => {
         console.log('Login Function Executed', formData);
         let responseData;
-        await fetch('http://localhost:4000/adminlogin', {
+        await fetch('https://officialmusamakueni.co.ke/api/adminlogin', {
           method: 'POST',
           headers: {
             Accept: 'application/form-data',
@@ -71,7 +71,7 @@ const AdminLoginSignup = () => {
 
         if (responseData.success) {
           localStorage.setItem('auth-token', responseData.token);
-          window.location.replace('/results');
+          window.location.replace('/admin/results');
         } else {
           alert(responseData.errors);
         }

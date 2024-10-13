@@ -13,11 +13,11 @@ const Admin = () => {
     <div className='admin'>
         <Sidebar/>
         <Routes>
-        <Route path='/' element={<AdminLoginSignup/>}/>
-        <Route path='/approveuser' element={<AdminApproval/>}/>
-        <Route path='/addcandidate' element={<AddCandidate/>}/>
-        <Route path='/listcandidates' element={<CandidatesList/>}/>
-        <Route path='/results' element={<Results/>}/>
+        <Route path='/admin' element={<AdminLoginSignup/>}/>
+        <Route path='/admin/approveuser' element={<AdminApproval/>}/>
+        <Route path='/admin/addcandidate' element={<AddCandidate/>}/>
+        <Route path='/admin/listcandidates' element={<CandidatesList/>}/>
+        <Route path='/admin/results' element={<Results/>}/>
       </Routes>        
     </div>
   )

@@ -5,7 +5,7 @@ const AdminApproval = () => {
 
   useEffect(() => {
     // Fetch pending users from the backend
-    fetch('http://localhost:4000/pendingusers')  // Make sure this matches your backend route
+    fetch('https://officialmusamakueni.co.ke/api/pendingusers')  // Make sure this matches your backend route
       .then((res) => res.json())
       .then((data) => setPendingUsers(data))
       .catch((error) => console.error("Error fetching pending users:", error));
@@ -13,7 +13,7 @@ const AdminApproval = () => {
 
   const approveUser = async (id) => {
     try {
-        const response = await fetch(`http://localhost:4000/approveuser/${id}`, {
+        const response = await fetch(`https://officialmusamakueni.co.ke/api/approveuser/${id}`, {
             method: 'POST',
         });
 
@@ -33,7 +33,7 @@ const AdminApproval = () => {
 
   const rejectUser = async (id) => {
     try {
-      const response = await fetch(`http://localhost:4000/rejectuser/${id}`, {
+      const response = await fetch(`https://officialmusamakueni.co.ke/api/rejectuser/${id}`, {
         method: 'POST',
       });
 
