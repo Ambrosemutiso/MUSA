@@ -63,7 +63,7 @@ const Login = () => {
     console.log('Login Function Executed', formData);
     let responseData;
     
-    await fetch('https://officialmusamakueni.co.ke/api/login', {
+    await fetch('https://api.officialmusamakueni.co.ke/login', {
         method: 'POST',
         headers: {
             Accept: 'application/form-data',
@@ -76,7 +76,7 @@ const Login = () => {
 
     if (responseData.success) {
         localStorage.setItem('auth-token', responseData.token);
-        window.location.replace('/frontend/candidates');
+        window.location.replace('/candidates');
     } else {
         alert(responseData.errors); 
     }
@@ -121,7 +121,7 @@ const Login = () => {
           />
           <div className="flex justify-end py-2 w-full">
             <Link 
-              to='/frontend/reset'
+              to='/reset'
               className="text-white underline hover:text-green-400 transition"
             >
               Forgot Password?
@@ -130,7 +130,7 @@ const Login = () => {
           <div className="flex justify-end py-2 w-full">
           Doesnt have an account?
             <Link 
-              to='/frontend/signup'
+              to='/signup'
               className="text-white underline hover:text-green-400 transition"
             >
               Signup here

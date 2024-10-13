@@ -38,7 +38,7 @@ const PasswordResetRequest = () => {
 
     setIsLoading(true);
     try {
-      const response = await fetch('https://officialmusamakueni.co.ke/api/reset', {
+      const response = await fetch('https://api.officialmusamakueni.co.ke/reset', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

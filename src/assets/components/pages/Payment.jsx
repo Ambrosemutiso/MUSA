@@ -54,7 +54,7 @@ const Payment = () => {
         <motion.button 
           {...buttonClick} {...fadeInOut}
           className="w-full px-4 py-2 mt-4 rounded-md bg-green-700 text-white text-lg font-semibold hover:bg-green-500 transition-all duration-150">
-          <Link to='/frontend/signup'> Proceed</Link></motion.button>
+          <Link to='/signup'> Proceed</Link></motion.button>
       </div>
     </div>
   );

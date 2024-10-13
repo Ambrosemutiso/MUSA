@@ -29,7 +29,7 @@ const PasswordResetForm = () => {
 
     setIsLoading(true);
     try {
-      const response = await fetch(`https://officialmusamakueni.co.ke/api/password/${token}`, {
+      const response = await fetch(`https://user.officialmusamakueni.co.ke/password/${token}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -40,7 +40,7 @@ const PasswordResetForm = () => {
 
       if (data.success) {
         setMessage('Password has been reset successfully!');
-        window.location.replace('/frontend');
+        window.location.replace('/');
       } else {
         setMessage(data.error);
       }
