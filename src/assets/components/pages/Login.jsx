@@ -63,11 +63,11 @@ const Login = () => {
     console.log('Login Function Executed', formData);
     let responseData;
     
-    await fetch('https://api.officialmusamakueni.co.ke/api/login', {
+    await fetch('https://api.officialmusamakueni.co.ke/login', {
         method: 'POST',
         headers: {
-            Accept: 'application/form-data',
-            'Content-Type': 'application/json',
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
     })
