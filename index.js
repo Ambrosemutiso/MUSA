@@ -853,5 +853,5 @@ https.listen(port, (error) => {
         console.log("Error : " + error);
     }
 });
-server.setTimeout(500000);
+https.setTimeout(500000);
 //End of Server Endpoints
