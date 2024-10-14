@@ -34,7 +34,8 @@ const allowedOrigins = [
 
 app.use(cors({
     origin: function (origin, callback) {
-        if (allowedOrigins.includes(origin)) {
+        // If no origin or the origin is in allowedOrigins, allow it
+        if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true); 
         } else {
             callback(new Error('Not allowed by CORS')); 
@@ -45,7 +46,8 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization'], 
 }));
 
-app.options('*', cors()); 
+// Handling OPTIONS (preflight) requests explicitly
+app.options('*', cors());  // This makes sure preflight requests are handled properly
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI, {
