@@ -1,14 +1,12 @@
-const port = 4000; 
+const port = 4000;
 const express = require("express");
 const app = express();
-const axios = require('axios');
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const path = require("path");
 const cors = require("cors");
 const https = require("https").createServer(app);
-const io = require("socket.io")(httpsServer);
 const nodemailer = require("nodemailer");
 const { google } = require("googleapis");
 const bcrypt = require("bcrypt");
@@ -34,7 +32,6 @@ const allowedOrigins = [
 
 app.use(cors({
     origin: function (origin, callback) {
-        // If no origin or the origin is in allowedOrigins, allow it
         if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true); 
         } else {
@@ -46,8 +43,7 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization'], 
 }));
 
-// Handling OPTIONS (preflight) requests explicitly
-app.options('*', cors());  // This makes sure preflight requests are handled properly
+app.options('*', cors());  
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI, {
@@ -754,16 +750,6 @@ app.get('/results', async (req, res) => {
       res.status(500).send('Error fetching results');
     }
   });
-  
-  
-//creating connection for realtime updates
-io.on('connection', (socket) => {
-    console.log('Admin connected for real-time updates');
-
-    socket.on('disconnect', () => {
-        console.log('Admin disconnected');
-    });
-});
 
 //creating Endpoint for admin login and signup
 /*creating admin model*/
@@ -804,7 +790,7 @@ app.post('/adminsignup', async (req, res) => {
         // Generate new user ID
         let admins = await Admins.find({});
         let adminNumber = admins.length > 0 
-            ? (parseInt(users.slice(-1)[0].id.split("/").slice(-1)[0]) + 1).toString().padStart(3, '0') 
+            ? (parseInt(admins.slice(-1)[0].id.split("/").slice(-1)[0]) + 1).toString().padStart(3, '0') 
             : '001';
 
         const adminId = `AUCT/2024/25/${adminNumber}`;
@@ -860,7 +846,6 @@ app.post('/adminlogin', async (req, res) => {
 });
 
 // Start server
-// Start HTTPS server
 https.listen(port, (error) => {
     if (!error) {
         console.log("HTTPS Server Running on Port " + port);
