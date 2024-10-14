@@ -27,9 +27,10 @@ app.use(express.json());
 
 // CORS configuration
 app.use(cors({
-    origin: 'https://officialmusamakueni.co.ke',
-    'https"//user.officialmusamakueni.co.ke',
-    'https://admin.officialmusamakueni.co.ke'
+    origin: ['https://user.officialmusamakueni.co.ke',
+        'https://admin.officialmusamakueni.co.ke',
+    ],
+    credentials: true
 }));
 
 // MongoDB connection
