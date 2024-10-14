@@ -26,12 +26,26 @@ if (!fs.existsSync(uploadDir)) {
 app.use(express.json());
 
 // CORS configuration
+const allowedOrigins = [
+    'https://officialmusamakueni.co.ke',
+    'https://user.officialmusamakueni.co.ke',
+    'https://admin.officialmusamakueni.co.ke'
+];
+
 app.use(cors({
-    origin: ['https://user.officialmusamakueni.co.ke',
-        'https://admin.officialmusamakueni.co.ke',
-    ],
-    credentials: true
+    origin: function (origin, callback) {
+        if (allowedOrigins.includes(origin)) {
+            callback(null, true); 
+        } else {
+            callback(new Error('Not allowed by CORS')); 
+        }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], 
+    credentials: true, 
+    allowedHeaders: ['Content-Type', 'Authorization'], 
 }));
+
+app.options('*', cors()); 
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI, {
