@@ -1,4 +1,4 @@
-const port = 4000;
+const port = process.env.PORT || 4000;
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -6,7 +6,6 @@ const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const path = require("path");
 const cors = require("cors");
-const https = require("https");
 const nodemailer = require("nodemailer");
 const { google } = require("googleapis");
 const bcrypt = require("bcrypt");
@@ -55,7 +54,7 @@ mongoose.connect(process.env.MONGO_URI, {
 });
 
 // Basic API route
-app.get("/", (req, res) => {
+app.get("/", (req, res, next) => {
     res.send("Express App is Running");
 });
 
@@ -844,21 +843,12 @@ app.post('/adminlogin', async (req, res) => {
     }
 });
 
-// Load SSL certificate and private key
-const sslOptions = {
-    key: fs.readFileSync('/home/kepyurbc/ssl/pri/api.officialmusamakueni.co.ke.key'),    
-    cert: fs.readFileSync('/home/kepyurbc/ssl/cert/api.officialmusamakueni.co.ke.crt') 
-};
-// Start HTTPS server
-const httpsServer = https.createServer(sslOptions, app);
-
-httpsServer.listen(port, (error) => {
+app.listen(port, (error) => {
     if (!error) {
-        console.log("HTTPS Server Running on Port " + port);
+        console.log("Server Running on Port " + port);
     } else {
         console.log("Error : " + error);
     }
 });
 
-httpsServer.setTimeout(500000);
 // End of Server Endpoints
