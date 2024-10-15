@@ -25,7 +25,8 @@ app.use(express.json());
 const allowedOrigins = [
     'https://officialmusamakueni.co.ke',
     'https://user.officialmusamakueni.co.ke',
-    'https://admin.officialmusamakueni.co.ke'
+    'https://admin.officialmusamakueni.co.ke',
+    'https://api.officialmusamakueni.co.ke'
 ];
 
 app.use(cors({
