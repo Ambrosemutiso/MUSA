@@ -6,13 +6,12 @@ const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const path = require("path");
 const cors = require("cors");
-const https = require("https").createServer(app);
+const https = require("https");
 const nodemailer = require("nodemailer");
 const { google } = require("googleapis");
 const bcrypt = require("bcrypt");
 const fs = require('fs');
 require('dotenv').config();
-
 
 // Ensure upload directory exists
 const uploadDir = './upload/images';
@@ -845,13 +844,21 @@ app.post('/adminlogin', async (req, res) => {
     }
 });
 
-// Start server
-https.listen(port, (error) => {
+// Load SSL certificate and private key
+const sslOptions = {
+    key: fs.readFileSync('/home/kepyurbc/ssl/pri/api.officialmusamakueni.co.ke.key'),    
+    cert: fs.readFileSync('/home/kepyurbc/ssl/cert/api.officialmusamakueni.co.ke.crt') 
+};
+// Start HTTPS server
+const httpsServer = https.createServer(sslOptions, app);
+
+httpsServer.listen(port, (error) => {
     if (!error) {
         console.log("HTTPS Server Running on Port " + port);
     } else {
         console.log("Error : " + error);
     }
 });
-https.setTimeout(500000);
-//End of Server Endpoints
+
+httpsServer.setTimeout(500000);
+// End of Server Endpoints
