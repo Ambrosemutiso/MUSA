@@ -1,6 +1,7 @@
 const port = process.env.PORT || 4000;
 const express = require("express");
 const app = express();
+const https = require('https');
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const multer = require("multer");
@@ -843,12 +844,11 @@ app.post('/adminlogin', async (req, res) => {
     }
 });
 
-app.listen(port, (error) => {
-    if (!error) {
-        console.log("Server Running on Port " + port);
-    } else {
-        console.log("Error : " + error);
-    }
-});
+const sslOptions = {
+    key: fs.readFileSync('/home/kepyurbc/ssl/keys/api.officialmusamakueni.co.ke.key'),  // Adjust the path if needed
+    cert: fs.readFileSync('/home/kepyurbc/ssl/certs/api.officialmusamakueni.co.ke.crt')  // Adjust the path if needed
+};
 
-// End of Server Endpoints
+https.createServer(sslOptions, app).listen(4000, () => {
+    console.log('HTTPS Server Running on port 4000');
+});
