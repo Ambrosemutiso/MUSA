@@ -76,7 +76,7 @@ const LoginSignup = () => {
     await fetch('https://api.officialmusamakueni.co.ke/signup', {
       method: 'POST',
       headers: {
-        Accept: 'application/form-data',
+        Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(formData),
@@ -166,4 +166,4 @@ const LoginSignup = () => {
   );
 };
 
-export default LoginSignup;
+export default LoginSignup; 
