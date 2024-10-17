@@ -37,7 +37,7 @@ const AdminLoginSignup = () => {
         await fetch('https://api.officialmusamakueni.co.ke/adminsignup', {
           method: 'POST',
           headers: {
-            Accept: 'application/form-data',
+            Accept: 'application/json',
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(formData),
@@ -61,7 +61,7 @@ const AdminLoginSignup = () => {
         await fetch('https://api.officialmusamakueni.co.ke/adminlogin', {
           method: 'POST',
           headers: {
-            Accept: 'application/form-data',
+            Accept: 'application/json',
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(formData),
