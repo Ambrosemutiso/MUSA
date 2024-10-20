@@ -15,10 +15,13 @@ const Footer = () => {
           <div className="w-full md:w-2/4 mb-6 md:mb-0">
             <ul className="flex flex-wrap justify-center space-x-8">
               <li><Link to='/' className="hover:text-gray-400">Home</Link></li>
-              <li><Link to='/' className="hover:text-gray-400">About</Link></li>
-              <li><Link to='/' className="hover:text-gray-400">Services</Link></li>
-              <li><Link to='/' className="hover:text-gray-400">Contact</Link></li>
+              <li><Link to='/about' className="hover:text-gray-400">About</Link></li>
+              <li><Link to='/services' className="hover:text-gray-400">Services</Link></li>
+              <li><Link to='/contact' className="hover:text-gray-400">Contact</Link></li>
+              <li><Link to='/testimonials' className="hover:text-gray-400">Testimonials</Link></li>
               <li><Link to='/terms-and-conditions' className="hover:text-gray-400">Terms of Service</Link></li>
+              <li><Link to='/privacy-policy' className="hover:text-gray-400">Privacy policy</Link></li>
+              <li><Link to='/signup' className="hover:text-gray-400">Join us</Link></li>
             </ul>
           </div>
           <div className="w-full md:w-1/4 flex justify-center md:justify-end space-x-6">

@@ -6,7 +6,7 @@ import { Logo } from './pages/Img';
 
 const Header = () => {
   return (
-    <header className="h-11 w-screen bg-white fixed flex items-center justify-between px-4 shadow-md">
+    <header className="h-11 z-20 w-screen bg-white fixed flex items-center justify-between px-4 shadow-md">
       {/* Logo Section */}
       <div className="flex items-center">
         <img src={Logo} alt="MUSA Logo" className="h-10 w-10 mr-2" />
