@@ -750,8 +750,7 @@ app.get('/results', async (req, res) => {
     }
   });
 
-//creating Endpoint for admin login and signup
-/*creating admin model*/
+// Create Admin model schema
 const Admins = mongoose.model('admin', {
     id: {
         type: String,
@@ -759,69 +758,74 @@ const Admins = mongoose.model('admin', {
         required: true,
     },
     name: {
-        type: String, 
+        type: String,
         required: true,
-    },    
+    },
     email: {
-        type: String, 
+        type: String,
         unique: true,
-        required: true, 
+        required: true,
     },
-    password: { 
-        type: String, 
-        required: true, 
+    password: {
+        type: String,
+        required: true,
     },
-    date: { 
-        type: Date, 
-        default: Date.now, 
+    date: {
+        type: Date,
+        default: Date.now,
     },
 });
 
-//user signup endpoint
+// Admin signup route
 app.post('/adminsignup', async (req, res) => {
-    try {
-        // Check if user already exists
-        let check = await Admins.findOne({ email: req.body.email });
-        if (check) {
-            return res.status(400).json({ success: false, error: "You are already registered as an admin, try to log in." });
-        }
-
-        // Generate new user ID
-        let admins = await Admins.find({});
-        let adminNumber = admins.length > 0 
-            ? (parseInt(admins.slice(-1)[0].id.split("/").slice(-1)[0]) + 1).toString().padStart(3, '0') 
-            : '001';
-
-        const adminId = `AUCT/2024/25/${adminNumber}`;
-        
-        // Hash the password
-        const salt = await bcrypt.genSalt(10);  // Generate salt
-        const hashedPassword = await bcrypt.hash(req.body.password, salt);  // Hash the password
-
-        // Create new user with 'pending' payment status
-        const admin = new Admins({
-            id: adminId,
-            name: req.body.adminName,
-            email: req.body.email.toLowerCase(), 
-            password: hashedPassword,  
-        });
-
-        await admin.save();
-
-        const data = {
-            admin: {
-                id: admin.id,
-                name: admin.name
-            }
-        };
-        const token = jwt.sign(data, 'secret_ecom');
-        res.json({ success: true, token });
-
-    } catch (error) {
-        console.error("Error during signup:", error);
-        res.status(500).json({ success: false, error: "An error occurred during signup. Please try again." });
+  try {
+    // Check the number of existing admins
+    const adminCount = await Admins.countDocuments();
+    
+    if (adminCount >= 2) {
+      return res.status(400).json({ success: false, errors: 'Maximum number of admins reached.' });
     }
+
+    const { name, email, password } = req.body;
+
+    // Check if an admin with the same email already exists
+    const existingAdmin = await Admins.findOne({ email });
+    if (existingAdmin) {
+      return res.status(400).json({ success: false, errors: 'Admin with this email already exists.' });
+    }
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newAdmin = new Admins({
+      name,
+      email,
+      password: hashedPassword, // Store the hashed password
+    });
+
+    await newAdmin.save();
+
+    // Generate JWT token
+    const token = generateAuthToken(newAdmin);
+
+    res.status(201).json({ success: true, token });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, errors: 'Server error' });
+  }
 });
+
+// Password hashing function
+const hashPassword = async (password) => {
+  const saltRounds = 10;
+  return await bcrypt.hash(password, saltRounds);
+};
+
+// JWT token generation function
+const generateAuthToken = (admin) => {
+  const token = jwt.sign({ id: admin._id }, 'secret_ecom', { expiresIn: '1h' });
+  return token;
+};
 
 //admin login Endpoint
 app.post('/adminlogin', async (req, res) => {
