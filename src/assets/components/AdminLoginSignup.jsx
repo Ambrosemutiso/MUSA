@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { buttonClick } from './animations'; // Removed unused fadeInOut
+import { buttonClick } from './animations';
 import { Envelope, Lock, Person, Show, Hide } from '../icons'; // icons for input fields
 
 const AdminLoginSignup = () => {
@@ -49,7 +49,8 @@ const AdminLoginSignup = () => {
           localStorage.setItem('auth-token', responseData.token);
           window.location.replace('/adminsignup');
         } else {
-          alert(responseData.errors);
+          // Handle error if maximum number of admins has been reached
+          alert(responseData.errors || 'Error occurred during signup');
         }
       };
 
