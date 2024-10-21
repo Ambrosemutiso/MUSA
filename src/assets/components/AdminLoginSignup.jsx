@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { buttonClick } from './animations'; // Removed unused fadeInOut
+import { buttonClick } from './animations';
 import { Envelope, Lock, Person, Show, Hide } from '../icons'; // icons for input fields
 
 const AdminLoginSignup = () => {
@@ -37,7 +37,7 @@ const AdminLoginSignup = () => {
         await fetch('https://api.officialmusamakueni.co.ke/adminsignup', {
           method: 'POST',
           headers: {
-            Accept: 'application/form-data',
+            Accept: 'application/json',
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(formData),
@@ -49,7 +49,8 @@ const AdminLoginSignup = () => {
           localStorage.setItem('auth-token', responseData.token);
           window.location.replace('/adminsignup');
         } else {
-          alert(responseData.errors);
+          // Handle error if maximum number of admins has been reached
+          alert(responseData.errors || 'Error occurred during signup');
         }
       };
 
@@ -61,7 +62,7 @@ const AdminLoginSignup = () => {
         await fetch('https://api.officialmusamakueni.co.ke/adminlogin', {
           method: 'POST',
           headers: {
-            Accept: 'application/form-data',
+            Accept: 'application/json',
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(formData),
