@@ -1,17 +1,27 @@
-import React from 'react'
-import './App.css'
-import Header from './assets/components/Header'
-import Admin from './assets/components/Admin'
-import Footer from './assets/components/Footer'
+import React, { useState } from 'react';
+import AdminLoginSignup from './assets/components/AdminLoginSignup';
+import Admin from './assets/components/Admin';
 
 const App = () => {
-  return (
-    <div>
-      <Header/>
-      <Admin/>
-      <Footer/>
-    </div>
-  )
-}
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-export default App
+  const handleLogin = (token) => {
+    // Save the token in local storage and update login state
+    localStorage.setItem('admin-token', token);
+    setIsLoggedIn(true);
+  };
+
+  return (
+    <div className="App">
+      {!isLoggedIn ? (
+        <AdminLoginSignup onLogin={handleLogin} />
+      ) : (
+        <div>
+          <Admin/>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default App;

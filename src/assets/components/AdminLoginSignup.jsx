@@ -1,212 +1,129 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { buttonClick } from './animations';
-import { Envelope, Lock, Person, Show, Hide } from '../icons'; // icons for input fields
+import axios from 'axios';
 
-const AdminLoginSignup = () => {
-  const [isSignup, setIsSignup] = useState(true); // to toggle between signup and login
+const AdminLoginSignup = ({ onLogin }) => {
+  const [adminName, setAdminName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [isLoginMode, setIsLoginMode] = useState(true); // Toggle between login and signup
 
-  const [formData, setFormData] = useState({
-    adminName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-  });
+  // Handle Signup
+  const handleSignup = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('https://api.officialmusamakueni.co.ke/adminsignup', {
+        name: adminName,
+        email,
+        password,
+      });
+      const { token } = response.data;
 
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+      // Store token in localStorage
+      localStorage.setItem('admin-token', token);
 
-  const togglePassword = () => setShowPassword(!showPassword);
-  const toggleConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
-
-  const changeHandler = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+      // Call the onLogin callback to set login state
+      onLogin(token);
+    } catch (error) {
+      const errorMsg = error.response?.data?.errors || error.message;
+      setError('Signup failed: ' + errorMsg);
+    }
   };
 
-  const handleSubmit = () => {
-    if (isSignup) {
-      const { password, confirmPassword } = formData;
-      if (password !== confirmPassword) {
-        alert('Passwords do not match');
-        return;
-      }
+  // Handle Login
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('https://api.officialmusamakueni.co.ke/adminlogin', {
+        email,
+        password,
+      });
+      const { token } = response.data;
 
-      const signup = async () => {
-        console.log('Signup Function Executed', formData);
-        let responseData;
-        await fetch('https://api.officialmusamakueni.co.ke/adminsignup', {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(formData),
-        })
-          .then((response) => response.json())
-          .then((data) => (responseData = data));
+      // Store token in localStorage
+      localStorage.setItem('admin-token', token);
 
-        if (responseData.success) {
-          localStorage.setItem('auth-token', responseData.token);
-          window.location.replace('/adminsignup');
-        } else {
-          // Handle error if maximum number of admins has been reached
-          alert(responseData.errors || 'Error occurred during signup');
-        }
-      };
-
-      signup(); // Call the signup function
-    } else {
-      const login = async () => {
-        console.log('Login Function Executed', formData);
-        let responseData;
-        await fetch('https://api.officialmusamakueni.co.ke/adminlogin', {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(formData),
-        })
-          .then((response) => response.json())
-          .then((data) => (responseData = data));
-
-        if (responseData.success) {
-          localStorage.setItem('auth-token', responseData.token);
-          window.location.replace('/results');
-        } else {
-          alert(responseData.errors);
-        }
-      };
-
-      login(); // Call the login function
+      // Call the onLogin callback to set login state
+      onLogin(token);
+    } catch (error) {
+      const errorMsg = error.response?.data?.errors || error.message;
+      setError('Login failed: ' + errorMsg);
     }
   };
 
   return (
-    <div className="bg-gray-100 flex justify-center items-center w-full min-h-screen p-4">
-      <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
-        <div className="flex items-center justify-between gap-16 mt-0">
-          <div className="w-28 h-[2px] rounded bg-green-400"></div>
-          <p className="text-2xl font-semibold text-center mb-6">
-            {isSignup ? 'Admin Signup' : 'Admin Login'}
-          </p>
-          <div className="w-28 h-[2px] rounded bg-green-400"></div>
-        </div>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+      <form
+        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+        onSubmit={isLoginMode ? handleLogin : handleSignup}
+      >
+        <h2 className="text-2xl font-bold mb-6">{isLoginMode ? 'Admin Login' : 'Admin Signup'}</h2>
 
-        <div className="w-full flex-col items-center justify-center gap-6 px-4 md:px-12 py-0.5 text-green-400 text-x">
-          {/* If signup, show admin name field */}
-          {isSignup && (
-            <LoginInput
-              name="adminName"
-              value={formData.adminName}
-              onChange={changeHandler}
+        {error && <div className="text-red-500 mb-4">{error}</div>}
+
+        {/* Conditionally render adminName input only for signup */}
+        {!isLoginMode && (
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="adminName">
+              Admin Name
+            </label>
+            <input
               type="text"
-              icon1={<img src={Person} alt="Admin" className="w-6 h-6" />}
-              placeHolder="Admin Name"
+              id="adminName"
+              value={adminName}
+              onChange={(e) => setAdminName(e.target.value)}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              required={!isLoginMode} // required only during signup
             />
-          )}
+          </div>
+        )}
 
-          {/* Email field */}
-          <LoginInput
-            name="email"
-            value={formData.email}
-            onChange={changeHandler}
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+            Email
+          </label>
+          <input
             type="email"
-            icon1={<img src={Envelope} alt="Email" className="w-6 h-6" />}
-            placeHolder="Email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            required
           />
-
-          {/* Password field */}
-          <LoginInput
-            name="password"
-            value={formData.password}
-            onChange={changeHandler}
-            type={showPassword ? 'text' : 'password'}
-            icon1={<img src={Lock} alt="Password" className="w-6 h-6" />}
-            placeHolder="Password"
-            icon2={
-              <img
-                src={showPassword ? Show : Hide}
-                alt={showPassword ? 'Hide Password' : 'Show Password'}
-                className="w-6 h-6 cursor-pointer"
-                onClick={togglePassword}
-              />
-            }
-          />
-
-          {/* If signup, show confirm password field */}
-          {isSignup && (
-            <LoginInput
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={changeHandler}
-              type={showConfirmPassword ? 'text' : 'password'}
-              icon1={<img src={Lock} alt="Confirm Password" className="w-6 h-6" />}
-              placeHolder="Confirm Password"
-              icon2={
-                <img
-                  src={showConfirmPassword ? Show : Hide}
-                  alt={showConfirmPassword ? 'Hide Confirm Password' : 'Show Confirm Password'}
-                  className="w-6 h-6 cursor-pointer"
-                  onClick={toggleConfirmPassword}
-                />
-              }
-            />
-          )}
         </div>
 
-        {/* Submit button */}
-        <motion.button
-          {...buttonClick}
-          className="w-full px-4 py-2 mt-4 rounded-md bg-green-400 text-white text-lg font-semibold hover:bg-green-500 transition-all duration-150"
-          onClick={handleSubmit}
-        >
-          {isSignup ? 'Sign Up' : 'Login'}
-        </motion.button>
-
-        {/* Toggle between login and signup */}
-        <div className="mt-4 text-center">
-          {isSignup ? (
-            <p>
-              Already have an account?{' '}
-              <span
-                className="text-green-500 cursor-pointer"
-                onClick={() => setIsSignup(false)}
-              >
-                Login here
-              </span>
-            </p>
-          ) : (
-            <p>
-              Don't have an account?{' '}
-              <span
-                className="text-green-500 cursor-pointer"
-                onClick={() => setIsSignup(true)}
-              >
-                Sign up here
-              </span>
-            </p>
-          )}
+        <div className="mb-6">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+            Password
+          </label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+            required
+          />
         </div>
-      </div>
+
+        <div className="flex items-center justify-between">
+          <button
+            type="submit"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          >
+            {isLoginMode ? 'Login' : 'Signup'}
+          </button>
+          <button
+            type="button"
+            onClick={() => setIsLoginMode(!isLoginMode)}
+            className="text-blue-500 hover:text-blue-800 font-bold"
+          >
+            {isLoginMode ? 'Switch to Signup' : 'Switch to Login'}
+          </button>
+        </div>
+      </form>
     </div>
   );
 };
-
-// Reusable input component
-const LoginInput = ({ name, value, onChange, type, icon1, placeHolder, icon2 }) => (
-  <div className="relative flex items-center mb-4">
-    {icon1 && <div className="absolute left-3">{icon1}</div>}
-    <input
-      name={name}
-      value={value}
-      onChange={onChange}
-      type={type}
-      placeholder={placeHolder}
-      className="w-full px-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-green-400"
-    />
-    {icon2 && <div className="absolute right-3">{icon2}</div>}
-  </div>
-);
 
 export default AdminLoginSignup;
