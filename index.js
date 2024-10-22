@@ -12,37 +12,11 @@ const bcrypt = require("bcrypt");
 const fs = require('fs');
 require('dotenv').config();
 
-// Ensure upload directory exists
-const uploadDir = './upload/images';
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
-}
-
 // Middleware and configuration
 app.use(express.json());
 
 // CORS configuration
-const allowedOrigins = [
-    'https://officialmusamakueni.co.ke',
-    'https://user.officialmusamakueni.co.ke',
-    'https://admin.officialmusamakueni.co.ke',
-    'https://api.officialmusamakueni.co.ke'
-];
-
-app.use(cors({
-    origin: function (origin, callback) {
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true); 
-        } else {
-            callback(new Error('Not allowed by CORS')); 
-        }
-    },
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], 
-    credentials: true, 
-    allowedHeaders: ['Content-Type', 'Authorization'], 
-}));
-
-app.options('*', cors());  
+app.use(cors()); 
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI, {
@@ -55,7 +29,7 @@ mongoose.connect(process.env.MONGO_URI, {
 });
 
 // Basic API route
-app.get("/", (req, res, next) => {
+app.get("/", (req, res) => {
     res.send("Express App is Running");
 });
 
@@ -752,11 +726,6 @@ app.get('/results', async (req, res) => {
 
 // Create Admin model schema
 const Admins = mongoose.model('admin', {
-    id: {
-        type: String,
-        unique: true,
-        required: true,
-    },
     name: {
         type: String,
         required: true,
@@ -776,31 +745,35 @@ const Admins = mongoose.model('admin', {
     },
 });
 
-// Admin signup route
+// Admin Signup Route
 app.post('/adminsignup', async (req, res) => {
   try {
     // Check the number of existing admins
     const adminCount = await Admins.countDocuments();
-    
     if (adminCount >= 2) {
-      return res.status(400).json({ success: false, errors: 'Maximum number of admins reached.' });
+      return res.status(400).json({ success: false, error: 'Maximum number of admins reached.' });
     }
 
     const { name, email, password } = req.body;
 
+    if (!name || !email || !password) {
+      return res.status(400).json({ success: false, error: 'All fields are required.' });
+    }
+
     // Check if an admin with the same email already exists
     const existingAdmin = await Admins.findOne({ email });
     if (existingAdmin) {
-      return res.status(400).json({ success: false, errors: 'Admin with this email already exists.' });
+      return res.status(400).json({ success: false, error: 'Admin with this email already exists.' });
     }
 
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    // Create new admin
     const newAdmin = new Admins({
       name,
       email,
-      password: hashedPassword, // Store the hashed password
+      password: hashedPassword
     });
 
     await newAdmin.save();
@@ -811,49 +784,52 @@ app.post('/adminsignup', async (req, res) => {
     res.status(201).json({ success: true, token });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ success: false, errors: 'Server error' });
+    res.status(500).json({ success: false, error: 'Server error' });
   }
 });
 
-// Password hashing function
-const hashPassword = async (password) => {
-  const saltRounds = 10;
-  return await bcrypt.hash(password, saltRounds);
-};
-
-// JWT token generation function
+// JWT Token Generation Function
 const generateAuthToken = (admin) => {
-  const token = jwt.sign({ id: admin._id }, 'secret_ecom', { expiresIn: '1h' });
-  return token;
+  return jwt.sign({ id: admin._id }, process.env.JWT_SECRET || 'secret_ecom', { expiresIn: '1h' });
 };
 
-//admin login Endpoint
-app.post('/adminlogin', async (req, res) => {
-    let admin = await Admins.findOne({ email: req.body.email });
-    if (admin) {
-        const passCompare = await bcrypt.compare(req.body.password, admin.password);
-        if (passCompare) {
-            const data = {
-                admin: {
-                    id: admin.id
-                }
-            }
-            const token = jwt.sign(data, 'secret_ecom');
-            res.json({ success: true, token });
-        } else {
-            res.json({ success: false, errors: "Wrong Password" });
-        }
-    } else {
-        res.json({ success: false, errors: "Wrong Email Id" });
-    }
-});
 
-app.listen(port, (error) => {
+// End of Server Endpoints
+app.post('/adminlogin', async (req, res) => {
+    const { email, password } = req.body;
+  
+    // Check if email and password are provided
+    if (!email || !password) {
+      return res.status(400).json({ success: false, error: 'Email and password are required.' });
+    }
+  
+    try {
+      // Check if admin with this email exists
+      const admin = await Admins.findOne({ email });
+      if (!admin) {
+        return res.status(400).json({ success: false, error: 'Invalid email or password.' });
+      }
+  
+      // Compare the provided password with the hashed password in the database
+      const isPasswordCorrect = await bcrypt.compare(password, admin.password);
+      if (!isPasswordCorrect) {
+        return res.status(400).json({ success: false, error: 'Invalid email or password.' });
+      }
+  
+      // Generate JWT token
+      const token = generateAuthToken(admin);
+  
+      res.json({ success: true, token });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false, error: 'Server error' });
+    }
+  });
+  
+  app.listen(port, (error) => {
     if (!error) {
         console.log("HTTP Server Running on Port " + port);
     } else {
         console.log("Error : " + error);
     }
 });
-
-// End of Server Endpoints
