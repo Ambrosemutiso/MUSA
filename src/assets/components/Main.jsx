@@ -23,7 +23,7 @@ const Main = () => {
           <Route path='/reset' element={<PasswordResetRequest/>}/>
           <Route path='/password/:token' element={<ResetPasswordForm/>}/>        
           <Route path='/candidates' element={<VotingComponent/>}/> 
-          <Route path='/Terms-and-conditions' element={<TermsAndConditions/>}/>
+          <Route path='/terms-and-conditions' element={<TermsAndConditions/>}/>
           <Route path='/privacy-policy' element={<PrivacyPolicy/>}/>
           <Route path='/contact' element={<Contact/>}/>
           <Route path='/services' element={<Services/>}/>

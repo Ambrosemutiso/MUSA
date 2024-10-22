@@ -55,7 +55,7 @@ const PrivacyPolicy = () => {
 
         <h2 className="text-2xl font-semibold text-green-700 mt-6 mb-4">7. Contact Us</h2>
         <p className="mb-4">
-          If you have any questions or concerns about this Privacy Policy, please contact us at <a href="mailto:info@officialmusamakueni.co.ke" className="text-blue-800">info@officialmusamakueni.co.ke</a>.
+          If you have any questions or concerns about this Privacy Policy, please contact us from <Link to="/privacy-policy" className="text-blue-800">here</Link>.
         </p>
 
         <div className="text-sm text-gray-600 mt-10">
