@@ -6,7 +6,7 @@ import Results from '../Img/results.jpg';
 
 const Sidebar = () => {
   return (
-    <div className="sidebar bg-green-700 w-64 h-full p-4 shadow-lg py-11">
+    <div className="sidebar bg-green-700 w-64 p-4 shadow-lg py-11">
       <h2 className="text-white text-2xl font-bold mb-6 text-center">Admin Panel</h2>
       <nav className="flex flex-col space-y-4">
         <Link to={'/addcandidate'} className="sidebar-item flex items-center p-2 rounded-lg hover:bg-green-600 transition-colors duration-300">
