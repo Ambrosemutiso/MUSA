@@ -58,11 +58,10 @@ const AddCandidate = () => {
     formData.append('candidate', image);
     await fetch('https://api.officialmusamakueni.co.ke/upload', {
       method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type':'application/json',        
-      },
-      body: formData,
+        headers: {
+          Accept: 'application/json',
+        },      
+        body: formData,     
     }).then((resp) => resp.json()).then((data) => { responseData = data });
 
     if (responseData.success) {
