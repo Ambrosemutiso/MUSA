@@ -35,7 +35,7 @@ const PasswordResetForm = () => {
     setIsLoading(true);
     try {
       // Make API request to reset password
-      const response = await fetch(`https://user.officialmusamakueni.co.ke/password/${token}`, {
+      const response = await fetch(`https://api.officialmusamakueni.co.ke/password/${token}`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
