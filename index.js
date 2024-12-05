@@ -16,12 +16,28 @@ require('dotenv').config();
 app.use(express.json());
 
 // CORS configuration
-app.use(cors()); 
+const allowedOrigins = ['https://user.officialmusamakueni.co.ke', 'https://admin.officialmusamakueni.co.ke'];
+
+const corsOptions = {
+    origin: (origin, callback) => {
+        if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE','USE'],
+    credentials: true,
+    allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization', 'auth-token'],
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
-    useUnifiedTopology: true,
+    useUnifiedTopology: true
 }).then(() => {
     console.log("MongoDB connected");
 }).catch(err => {
@@ -33,24 +49,24 @@ app.get("/", (req, res) => {
     res.send("Express App is Running");
 });
 
-// Multer storage configuration
+// Image Storage Engine
 const storage = multer.diskStorage({
-    destination: './upload/images',
+    destination: '/var/www/upload/images',
     filename: (req, file, cb) => {
         return cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`);
-    }
+    } 
 });
 
 const upload = multer({ storage: storage });
 
-// Serving static images
-app.use('/images', express.static(path.join(__dirname, 'upload/images')));
+// Serving Static Images
+app.use('/upload/images', express.static(path.join(__dirname, 'upload/images')));
 
-// File upload endpoint
+// Upload Endpoint for Images
 app.post('/upload', upload.single('candidate'), (req, res) => {
     res.json({
         success: 1,
-        image_url: `https://officialmusamakueni.co.ke/images/${req.file.filename}` // Removed port from URL
+        image_url: `https://api.officialmusamakueni.co.ke/upload/images/${req.file.filename}`
     });
 });
 
@@ -306,6 +322,7 @@ async function sendUserIdEmail(userEmail, userName, userId) {
                 <div style="
                     max-width: 600px; 
                     margin: 0 auto; 
+                    rounded: full;
                     padding: 20px; 
                     border: 1px solid #ddd; 
                     border-radius: 10px; 
@@ -313,7 +330,7 @@ async function sendUserIdEmail(userEmail, userName, userId) {
                     
                     <!-- Logo Section -->
                     <div style="text-align: center; margin-bottom: 20px;">
-                        <img src="LOGO_URL" alt="MUSA Logo" style="width: 150px; height: auto;"/>
+                        <img src="https://user.officialmusamakueni.co.ke/logo512.png" alt="MUSA Logo" style="width: 70px; height: 70px;"/>
                     </div>
                     
                     <!-- Email Heading -->
@@ -337,13 +354,14 @@ async function sendUserIdEmail(userEmail, userName, userId) {
                         <strong>Please note the following:</strong>
                     </p>
                     <ul style="font-size: 16px; color: #333; padding-left: 20px;">
-                        <li>This registration number will be used as your first-time login password.</li>
+                        <li>This registration number is subject to be renewed annually.</li>
                         <li>Contact us immediately if you believe this message has been received in error.</li>
+                        <li>click this link to join the whatsapp group<a href="https://chat.whatsapp.com/KDgElqNaWH0Kaib90lhGhH" style="color:#008000; padding-left:5px;" >MUSA official group</a></li>
                     </ul>
         
                     <!-- Footer and Contact Information -->
                     <p style="font-size: 16px; color: #333;">
-                        If you have any questions or require further clarification, please don't hesitate to reach out to us directly via <a href="mailto:officialmusa.makueni017@gmail.com" style="color: #007bff; text-decoration: none;">officialmusa.makueni017@gmail.com</a>.
+                        If you have any questions or require further clarification, please don't hesitate to reach out to us directly via <a href="mailto:official.musa.makueni@gmail.com" style="color: #007bff; text-decoration: none;">officialmusa.makueni017@gmail.com</a>.
                     </p>
         
                     <p style="text-align: center; font-size: 18px; color: #2d3748;">
@@ -359,21 +377,7 @@ async function sendUserIdEmail(userEmail, userName, userId) {
                             <span style="color: #008000;">Unity</span>, <span style="color: #007bff;">Vision</span> & <span style="color: #ffcc00;">Progress</span>
                         </p>
                     </div>
-        
-                    <!-- Social Media Icons -->
-                    <div style="text-align: center; margin-top: 20px;">
-                        <a href="https://www.facebook.com/musamakueni" style="margin-right: 15px;">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook" style="width: 30px; height: 30px;">
-                        </a>
-                        <a href="https://www.twitter.com/MUSA_makueni017?t=LTZiDkJ9vfNuSGwZvkLCbg&s=09" style="margin-right: 15px;">
-                            <img src="https://upload.wikimedia.org/wikipedia/en/6/60/Twitter_Logo_as_of_2021.svg" alt="Twitter" style="width: 30px; height: 30px;">
-                        </a>
-                        <a href="https://www.instagram.com/makueni_comrades?igshid=OGQ5ZDc2ODk22ZA==" style="margin-right: 15px;">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" style="width: 30px; height: 30px;">
-                        </a>
-                        <a href="https://www.linkedin.com/company/makueni-university-students-association-musa/">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" alt="LinkedIn" style="width: 30px; height: 30px;">
-                        </a>
+
                     </div>
                 </div>
             </body>
@@ -517,28 +521,31 @@ app.post('/reset', async (req, res) => {
 app.post('/password/:token', async (req, res) => {
     const { token } = req.params;
     const { password } = req.body;
-
+  
     try {
-        const decoded = jwt.verify(token, 'secret_ecom');
-        console.log("Decoded Token:", decoded); 
-
-        const user = await Users.findById(decoded.id);
-        if (!user) {
-            return res.status(400).json({ error: 'Invalid or expired token' });
-        }
-
-        user.password = await bcrypt.hash(password, 10);
-        await user.save();
-
-        res.json({ success: true, message: 'Password reset successfully!' });
+      const decoded = jwt.verify(token, 'secret_ecom');
+      console.log("Decoded Token:", decoded);
+  
+      const user = await Users.findById(decoded.id);
+      if (!user) {
+        console.error("User not found for ID:", decoded.id);
+        return res.status(400).json({ error: 'Invalid or expired token' });
+      }
+  
+      user.password = await bcrypt.hash(password, 10);
+      await user.save();
+      console.log("Password updated for user ID:", user._id);
+  
+      res.json({ success: true, message: 'Password reset successfully!' });
     } catch (error) {
-        console.error("Token verification error:", error);
-        if (error.name === 'TokenExpiredError') {
-            return res.status(400).json({ error: 'Token has expired' });
-        }
-        res.status(500).json({ error: 'Invalid or expired token' });
+      console.error("Error in token verification or password reset:", error);
+      if (error.name === 'TokenExpiredError') {
+        return res.status(400).json({ error: 'Token has expired' });
+      }
+      res.status(500).json({ error: 'Invalid or expired token' });
     }
-});
+  });
+  
 
 //creating endpoint for adding candidates
 app.post('/addcandidate', async (req, res) => {
