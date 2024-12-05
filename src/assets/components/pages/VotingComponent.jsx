@@ -9,28 +9,25 @@ const VotingComponent = () => {
   const [votedPositions, setVotedPositions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [userName, setUserName] = useState('');
-  const [canVote, setCanVote] = useState(false); // To track if voting is allowed
+  const [canVote, setCanVote] = useState(false);
   const [timeUntilVoting, setTimeUntilVoting] = useState('');
 
   useEffect(() => {
-      // Election start and end dates
-  const electionStart = new Date('2024-12-13T06:00:00');
-  const electionEnd = new Date('2024-12-14T06:00:00');
+    const electionStart = new Date('2024-12-14T06:00:00'); 
+    const electionEnd = new Date('2024-12-15T06:00:00');   
+
     const fetchData = async () => {
       try {
-        // Fetch user info
         const userResponse = await axios.get('https://api.officialmusamakueni.co.ke/user', {
           headers: { 'auth-token': localStorage.getItem('auth-token') }
         });
         setUserName(userResponse.data.name || 'User');
 
-        // Fetch candidates
         const candidatesResponse = await axios.get('https://api.officialmusamakueni.co.ke/candidates', {
           headers: { 'auth-token': localStorage.getItem('auth-token') }
         });
         setCandidates(candidatesResponse.data);
 
-        // Fetch voted positions
         const votesResponse = await axios.get('https://api.officialmusamakueni.co.ke/votes', {
           headers: { 'auth-token': localStorage.getItem('auth-token') }
         });
@@ -63,15 +60,13 @@ const VotingComponent = () => {
       }
     };
 
-    // Check voting time on component mount
     fetchData();
     checkVotingTime();
 
-    // Set an interval to check the voting time every minute
-    const interval = setInterval(checkVotingTime, 60000); // 1 minute interval
+    const interval = setInterval(checkVotingTime, 60000); 
 
-      return () => clearInterval(interval); 
-}, []);
+    return () => clearInterval(interval);
+  }, []);
 
   const Vote = async (candidateId, position) => {
     setLoading(true);
