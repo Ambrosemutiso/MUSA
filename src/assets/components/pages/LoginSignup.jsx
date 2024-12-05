@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { fadeInOut, buttonClick } from './animations';
-import { Call, Envelope, Home, ID, Location, Lock, Show, Hide, Mpesa, Person } from './icons'; // EyeOpen for show password, EyeClosed for hide password
+import { Call, Envelope, Home, ID, Location, Lock, Show, Hide, Mpesa, Person } from './icons';
 import { Link } from 'react-router-dom';
 
 const LoginInput = ({ placeHolder, icon1, icon2, type, name, value, onChange }) => {
@@ -82,11 +82,11 @@ const LoginSignup = () => {
       body: JSON.stringify(formData),
     })
       .then((response) => response.json())
-      .then((data) => responseData = data);
+      .then((data) => (responseData = data));
 
     if (responseData.success) {
       localStorage.setItem('auth-token', responseData.token);
-      window.location.replace("/");
+      window.location.replace('/');
     } else {
       alert(responseData.errors);
     }
@@ -102,17 +102,41 @@ const LoginSignup = () => {
         </div>
 
         <div className="w-full flex-col items-center justify-center gap-6 px-4 md:px-12 py-0.5 text-green-400 text-x">
-          <LoginInput name='username' value={formData.username} onChange={changeHandler} type='text' icon1={<img src={Person} alt="" className="w-6 h-6" />} placeHolder="Your Full Names" />
-          <LoginInput name='email' value={formData.email} onChange={changeHandler} type='email' icon1={<img src={Envelope} alt="" className="w-6 h-6" />} placeHolder="Your Email" />
-          <LoginInput name='phoneNumber' value={formData.phoneNumber} onChange={changeHandler} type='tel' icon1={<img src={Call} alt="" className="w-6 h-6" />} placeHolder="Phone Number" />
-          <LoginInput name='idNumber' value={formData.idNumber} onChange={changeHandler} type='number' icon1={<img src={ID} alt="" className="w-6 h-6" />} placeHolder="ID Number" />
-          <LoginInput name='chapter' value={formData.chapter} onChange={changeHandler} type='text' icon1={<img src={Location} alt="" className="w-6 h-6" />} placeHolder="Chapter" />
-          <LoginInput name='university' value={formData.university} onChange={changeHandler} type='text' icon1={<img src={Home} alt="" className="w-6 h-6" />} placeHolder="University/College" />
-          <LoginInput name='admNumber' value={formData.admNumber} onChange={changeHandler} type='String' icon1={<img src={ID} alt="" className="w-6 h-6" />} placeHolder="Admission Number" />
-          <LoginInput name='transaction' value={formData.transaction} onChange={changeHandler} type='String' icon1={<img src={Mpesa} alt="" className="w-6 h-6" />} placeHolder="M-Pesa Transaction Code" /> {/* Transaction code input */}
+          <LoginInput name="username" value={formData.username} onChange={changeHandler} type="text" icon1={<img src={Person} alt="" className="w-6 h-6" />} placeHolder="Your Full Names" />
+          <LoginInput name="email" value={formData.email} onChange={changeHandler} type="email" icon1={<img src={Envelope} alt="" className="w-6 h-6" />} placeHolder="Your Email" />
+          <LoginInput name="phoneNumber" value={formData.phoneNumber} onChange={changeHandler} type="tel" icon1={<img src={Call} alt="" className="w-6 h-6" />} placeHolder="Phone Number" />
+          <LoginInput name="idNumber" value={formData.idNumber} onChange={changeHandler} type="number" icon1={<img src={ID} alt="" className="w-6 h-6" />} placeHolder="ID Number" />
+          <div className="mb-4">
+            <motion.div
+              {...fadeInOut}
+              className="flex items-center bg-white shadow-lg rounded-md w-full px-4 py-2 transition-all duration-300 border border-gray-300 focus-within:border-green-400"
+            >
+              <img src={Location} alt="" className="w-6 h-6" />
+              <select
+                className="w-full bg-transparent text-gray-800 placeholder-gray-500 font-semibold px-3 outline-none border-none focus:ring-0"
+                name="chapter"
+                value={formData.chapter}
+                onChange={changeHandler}
+              >
+                <option value="" disabled>
+                  Select Chapter
+                </option>
+                <option value="Kaiti">Kaiti</option>
+                <option value="Kibwezi E">Kibwezi E</option>
+                <option value="Kibwezi W">Kibwezi W</option>
+                <option value="Kilome">Kilome</option>
+                <option value="Mbooni">Mbooni</option>
+                <option value="Makueni">Makueni</option>
+              </select>
+            </motion.div>
+          </div>
+
+          <LoginInput name="university" value={formData.university} onChange={changeHandler} type="text" icon1={<img src={Home} alt="" className="w-6 h-6" />} placeHolder="University/College" />
+          <LoginInput name="admNumber" value={formData.admNumber} onChange={changeHandler} type="String" icon1={<img src={ID} alt="" className="w-6 h-6" />} placeHolder="Admission Number" />
+          <LoginInput name="transaction" value={formData.transaction} onChange={changeHandler} type="String" icon1={<img src={Mpesa} alt="" className="w-6 h-6" />} placeHolder="M-Pesa Transaction Code" />
 
           <LoginInput
-            name='password'
+            name="password"
             value={formData.password}
             onChange={changeHandler}
             type={showPassword ? 'text' : 'password'}
@@ -121,7 +145,7 @@ const LoginSignup = () => {
             icon2={
               <img
                 src={showPassword ? Show : Hide}
-                alt={showPassword ? "Hide Password" : "Show Password"}
+                alt={showPassword ? 'Hide Password' : 'Show Password'}
                 className="w-6 h-6 cursor-pointer"
                 onClick={togglePassword}
               />
@@ -129,7 +153,7 @@ const LoginSignup = () => {
           />
 
           <LoginInput
-            name='confirmPassword'
+            name="confirmPassword"
             value={formData.confirmPassword}
             onChange={changeHandler}
             type={showConfirmPassword ? 'text' : 'password'}
@@ -138,7 +162,7 @@ const LoginSignup = () => {
             icon2={
               <img
                 src={showConfirmPassword ? Show : Hide}
-                alt={showConfirmPassword ? "Hide Confirm Password" : "Show Confirm Password"}
+                alt={showConfirmPassword ? 'Hide Confirm Password' : 'Show Confirm Password'}
                 className="w-6 h-6 cursor-pointer"
                 onClick={toggleConfirmPassword}
               />
@@ -146,8 +170,12 @@ const LoginSignup = () => {
           />
         </div>
 
-        <p className="ml-11">Already have an account? <Link {...fadeInOut} to="/" className="text-green-400 underline">login here</Link></p>
-        <p className="ml-11">Not yet paid registration fee? <Link {...fadeInOut} to="/pay-registration-fee" className="text-green-400 underline">click here</Link></p>
+        <p className="ml-11">
+          Already have an account? <Link {...fadeInOut} to="/" className="text-green-400 underline">login here</Link>
+        </p>
+        <p className="ml-11">
+          Not yet paid registration fee? <Link {...fadeInOut} to="/pay-registration-fee" className="text-green-400 underline">click here</Link>
+        </p>
 
         <div className="flex items-center gap-2 mt-4">
           <input type="checkbox" name="check" id="right" required />
@@ -166,4 +194,4 @@ const LoginSignup = () => {
   );
 };
 
-export default LoginSignup; 
+export default LoginSignup;
