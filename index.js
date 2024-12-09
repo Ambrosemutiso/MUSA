@@ -16,7 +16,7 @@ require('dotenv').config();
 app.use(express.json());
 
 // CORS configuration
-const allowedOrigins = ['https://user.officialmusamakueni.co.ke', 'https://admin.officialmusamakueni.co.ke'];
+const allowedOrigins = ['http://localhost:3000', 'https://admin.officialmusamakueni.co.ke'];
 
 const corsOptions = {
     origin: (origin, callback) => {
@@ -316,73 +316,88 @@ async function sendUserIdEmail(userEmail, userName, userId) {
             from: process.env.USER_EMAIL,
             to: userEmail,
             subject: 'Your MUSA Membership for the Year 2024/25',
-            html: `
-            <html>
-            <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-                <div style="
-                    max-width: 600px; 
-                    margin: 0 auto; 
-                    rounded: full;
-                    padding: 20px; 
-                    border: 1px solid #ddd; 
-                    border-radius: 10px; 
-                    background-color: #f9f9f9;">
-                    
-                    <!-- Logo Section -->
-                    <div style="text-align: center; margin-bottom: 20px;">
-                        <img src="https://user.officialmusamakueni.co.ke/logo512.png" alt="MUSA Logo" style="width: 70px; height: 70px;"/>
-                    </div>
-                    
-                    <!-- Email Heading -->
-                    <h2 style="text-align: center; color: #007bff;">Hello, ${userName}</h2>
-                    <p style="text-align: center; font-size: 18px; color: #2d3748;">
-                        I hope this message finds you well.
-                    </p>
-        
-                    <!-- Membership Details -->
-                    <div style="background-color: #e0f7e0; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
-                        <h3 style="color: #008000; text-align: center;">
-                            <strong>Your MUSA Registration Number:</strong>
-                        </h3>
-                        <p style="font-size: 20px; text-align: center; color: #006400;">
-                            <strong>${userId}</strong>
-                        </p>
-                    </div>
-        
-                    <!-- Important Information -->
-                    <p style="font-size: 16px; color: #333;">
-                        <strong>Please note the following:</strong>
-                    </p>
-                    <ul style="font-size: 16px; color: #333; padding-left: 20px;">
-                        <li>This registration number is subject to be renewed annually.</li>
-                        <li>Contact us immediately if you believe this message has been received in error.</li>
-                        <li>click this link to join the whatsapp group<a href="https://chat.whatsapp.com/KDgElqNaWH0Kaib90lhGhH" style="color:#008000; padding-left:5px;" >MUSA official group</a></li>
-                    </ul>
-        
-                    <!-- Footer and Contact Information -->
-                    <p style="font-size: 16px; color: #333;">
-                        If you have any questions or require further clarification, please don't hesitate to reach out to us directly via <a href="mailto:official.musa.makueni@gmail.com" style="color: #007bff; text-decoration: none;">officialmusa.makueni017@gmail.com</a>.
-                    </p>
-        
-                    <p style="text-align: center; font-size: 18px; color: #2d3748;">
-                        Best regards,
-                    </p>
-                    <p style="text-align: center; font-size: 18px; color: #2d3748;">
-                        <strong>MUSA Tech Team</strong>
-                    </p>
-        
-                    <!-- Slogan or Motto -->
-                    <div style="text-align: center; padding: 10px; background-color: #f9f9f9; border-top: 1px solid #ddd;">
-                        <p style="font-size: 16px; font-weight: bold; color: #2d3748;">
-                            <span style="color: #008000;">Unity</span>, <span style="color: #007bff;">Vision</span> & <span style="color: #ffcc00;">Progress</span>
-                        </p>
-                    </div>
+            html: ` 
+<html>
+<body style="font-family: Arial, sans-serif; line-height: 1.8; color: #333; background-color: #f4f4f4; padding: 20px;">
+    <div style="
+        max-width: 600px; 
+        margin: 0 auto; 
+        padding: 20px; 
+        border: 1px solid #ddd; 
+        border-radius: 10px; 
+        background-color: #ffffff; 
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
 
-                    </div>
-                </div>
-            </body>
-            </html>
-            `
+        <!-- Logo Section -->
+        <div style="text-align: center; margin-bottom: 20px;">
+            <div style="
+                width: 90px; 
+                height: 90px; 
+                margin: 0 auto; 
+                background-color: #007bff; 
+                border-radius: 50%; 
+                display: flex; 
+                justify-content: center; 
+                align-items: center;">
+                <img src="https://user.officialmusamakueni.co.ke/logo512.png" alt="MUSA Logo" style="width: 60px; height: 60px; border-radius: 50%;"/>
+            </div>
+        </div>
+
+        <!-- Email Heading -->
+        <h2 style="text-align: center; color: #007bff; font-size: 24px;">Hello, ${userName}</h2>
+        <p style="text-align: center; font-size: 18px; color: #555;">
+            Welcome to the Makueni University Students Association (MUSA) for the year 2024/25.
+        </p>
+
+        <!-- Membership Details -->
+        <div style="background-color: #e6f9e6; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: center;">
+            <h3 style="color: #006400; font-size: 20px; margin: 0;">
+                <strong>Your MUSA Registration Number:</strong>
+            </h3>
+            <p style="font-size: 24px; color: #004d00; font-weight: bold; margin: 5px 0;">
+                ${userId}
+            </p>
+        </div>
+
+        <!-- Important Information -->
+        <p style="font-size: 16px; color: #333;">
+            <strong>Important Information:</strong>
+        </p>
+        <ul style="font-size: 16px; color: #555; padding-left: 20px; margin-bottom: 20px;">
+            <li>Your registration number must be renewed annually.</li>
+            <li>If you received this message in error, please contact us immediately.</li>
+            <li>Join the MUSA WhatsApp group for updates: 
+                <a href="https://chat.whatsapp.com/KDgElqNaWH0Kaib90lhGhH" style="color: #008000; text-decoration: none;">MUSA Official Group</a>.
+            </li>
+        </ul>
+
+        <!-- Contact Information -->
+        <p style="font-size: 16px; color: #333; margin-bottom: 20px;">
+            If you have any questions or require assistance, feel free to contact us at 
+            <a href="mailto:official.musa.makueni@gmail.com" style="color: #007bff; text-decoration: none;">official.musa.makueni@gmail.com</a>.
+        </p>
+
+        <!-- Closing -->
+        <p style="text-align: center; font-size: 18px; color: #555; margin-bottom: 5px;">
+            Best regards,
+        </p>
+        <p style="text-align: center; font-size: 18px; color: #555; font-weight: bold;">
+            MUSA Tech Team
+        </p>
+
+        <!-- Footer and Motto -->
+        <div style="text-align: center; padding: 10px; background-color: #f9f9f9; border-top: 1px solid #ddd; margin-top: 20px;">
+            <p style="font-size: 16px; font-weight: bold; color: #555; margin: 0;">
+                <span style="color: #008000;">Unity</span>, 
+                <span style="color: #007bff;">Vision</span>, & 
+                <span style="color: #ffcc00;">Progress</span>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+`
+
         };
          
 
@@ -434,10 +449,10 @@ app.post('/login', async (req, res) => {
 
 
 // Function to send the password reset email
-async function sendPasswordResetEmail(userEmail, userName, resetToken) {
+async function sendPasswordResetEmail(userEmail, userName, token) {
     try {
         const accessToken = await oAuth2Client.getAccessToken();
-        const resetLink = `https://user.officialmusamakueni.co.ke/password/${resetToken}`;
+        const resetLink = `https://user.officialmusamakueni.co.ke/password/${token}`;
 
         let transporter = nodemailer.createTransport({
             service: 'gmail',
@@ -460,34 +475,57 @@ async function sendPasswordResetEmail(userEmail, userName, resetToken) {
             subject: 'Password Reset Request',
             html: `
             <html>
-            <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+            <body style="font-family: Arial, sans-serif; line-height: 1.8; color: #333; background-color: #f4f4f4; padding: 20px;">
                 <div style="
-                    max-width: 600px; 
-                    margin: 0 auto; 
-                    padding: 20px; 
-                    border: 1px solid #ddd; 
-                    border-radius: 10px; 
-                    background-color: #f9f9f9;">
-                    <h2 style="text-align: center; color: #007bff;">Hello, ${userName}</h2>
-                    <p style="text-align: center; font-size: 18px; color: #2d3748;">You have requested to reset your password. Please click the link below to reset it:</p>
-                    <p style="text-align: center; font-size: 18px; color: #2d3748;"><a href="${resetLink}">Reset Password</a></p>
-                    <p>This link will expire in 1 hour.</p>
-                                        <p style="text-align: center; font-size: 18px; color: #2d3748;">
-                        Best regards,
+                    max-width: 600px;
+                    margin: 0 auto;
+                    padding: 20px;
+                    border: 1px solid #ddd;
+                    border-radius: 10px;
+                    background-color: #ffffff;
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+                    
+                    <!-- Header -->
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <h2 style="font-size: 24px; color: #007bff; margin: 0;">Hello, ${userName}</h2>
+                        <p style="font-size: 16px; color: #555;">We're here to help you reset your password.</p>
+                    </div>
+            
+                    <!-- Reset Instructions -->
+                    <p style="font-size: 16px; color: #333;">
+                        You've requested to reset your password. To proceed, please click the button below:
                     </p>
-                    <p style="text-align: center; font-size: 18px; color: #2d3748;">
-                        <strong>MUSA Tech Team</strong>
+                    <div style="text-align: center; margin: 20px 0;">
+                        <a href="${resetLink}" 
+                            style="
+                                display: inline-block;
+                                font-size: 16px;
+                                color: #ffffff;
+                                background-color: #007bff;
+                                padding: 10px 20px;
+                                text-decoration: none;
+                                border-radius: 5px;
+                                font-weight: bold;">
+                            Reset Password
+                        </a>
+                    </div>
+                    <p style="font-size: 14px; color: #555; text-align: center;">
+                        This link is valid for the next 1 hour. If you did not request this change, please ignore this email.
                     </p>
-        
-                    <!-- Slogan or Motto -->
-                    <div style="text-align: center; padding: 10px; background-color: #f9f9f9; border-top: 1px solid #ddd;">
-                        <p style="font-size: 16px; font-weight: bold; color: #2d3748;">
-                            <span style="color: #008000;">Unity</span>, <span style="color: #007bff;">Vision</span> & <span style="color: #ffcc00;">Progress</span>
+            
+                    <!-- Footer -->
+                    <div style="border-top: 1px solid #ddd; margin-top: 20px; padding-top: 10px; text-align: center; color: #777;">
+                        <p style="font-size: 14px; margin: 0;">Thank you for using our services!</p>
+                        <p style="font-size: 14px; margin: 5px 0;"><strong>MUSA Tech Team</strong></p>
+                        <p style="font-size: 14px; margin: 0;">
+                            <span style="color: #008000;">Unity</span>, 
+                            <span style="color: #007bff;">Vision</span>, & 
+                            <span style="color: #ffcc00;">Progress</span>
                         </p>
                     </div>
                 </div>
-                </body>
-                </html>`,
+            </body>
+        </html>`,
         };        
 
         let result = await transporter.sendMail(mailOptions);
@@ -637,8 +675,14 @@ const fetchUser = async (req, res, next) => {
 
 //creting endpoint for fetching the user and passing the user to the frontend
 app.get('/user', fetchUser, (req, res) => {
-    console.log("Returning user:", req.user);
-    res.json({ name: req.user.name });
+    try {
+        console.log("Returning user:", req.user);
+        // Return all user details instead of just the name
+        res.json(req.user);
+    } catch (error) {
+        console.error("Error fetching user:", error);
+        res.status(500).json({ error: "An error occurred while fetching user details." });
+    }
 });
 
 // Endpoint to fetch candidates based on user's chapter
@@ -832,7 +876,7 @@ app.post('/adminlogin', async (req, res) => {
       res.status(500).json({ success: false, error: 'Server error' });
     }
   });
-  
+ 
   app.listen(port, (error) => {
     if (!error) {
         console.log("HTTP Server Running on Port " + port);
