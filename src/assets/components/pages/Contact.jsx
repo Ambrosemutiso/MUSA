@@ -16,12 +16,12 @@ const Contact = () => {
             {/* Contact Details */}
             <div className="mb-6">
               <h2 className="text-xl font-semibold text-green-700">Phone</h2>
-              <p className="text-lg text-blue-800">+254 790 440 234</p>
+              <p className="text-lg text-blue-800">+254790440234</p>
             </div>
 
             <div className="mb-6">
               <h2 className="text-xl font-semibold text-green-700">Email</h2>
-              <p className="text-lg text-blue-800">info@officialmusamakueni.co.ke</p>
+              <p className="text-lg text-blue-800">official.musa.makueni@gmail.com</p>
             </div>
 
             {/* Social Media Icons */}
@@ -29,19 +29,19 @@ const Contact = () => {
               <h2 className="text-xl font-semibold text-green-700">Follow Us</h2>
               <div className="flex space-x-6">
                 <a href="https://www.facebook.com/musamakueni" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
-                  <i className="fab fa-facebook fa-2x"></i>
+                  <i className="fab fa-facebook fa-lg"></i>
                 </a>
                 <a href="https://www.twitter.com/MUSA_makueni017?t=LTZiDkJ9vfNuSGwZvkLCbg&s=09" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-600">
-                  <i className="fab fa-twitter fa-2x"></i>
+                  <i className="fab fa-twitter fa-lg"></i>
                 </a>
                 <a href="https://www.instagram.com/makueni_comrades?igshid=OGQ5ZDc2ODk22ZA==" target="_blank" rel="noopener noreferrer" className="text-pink-600 hover:text-pink-800">
-                  <i className="fab fa-instagram fa-2x"></i>
+                  <i className="fab fa-instagram fa-lg"></i>
                 </a>
                 <a href="https://www.linkedin.com/company/makueni-university-students-association-musa/" target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:text-blue-900">
-                  <i className="fab fa-linkedin fa-2x"></i>
+                  <i className="fab fa-linkedin fa-lg"></i>
                 </a>
                 <a href="https://www.youtube.com/@musamakueni?si=PiQbW1kBVm7RZ5QI" target="_blank" rel="noopener noreferrer" className="text-red-500 hover:text-red-600">
-                  <i className="fab fa-youtube fa-2x"></i>
+                  <i className="fab fa-youtube fa-lg"></i>
                 </a>
               </div>
             </div>

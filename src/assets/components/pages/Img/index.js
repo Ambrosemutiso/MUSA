@@ -10,5 +10,6 @@ import Peter from './Peter.jpg';
 import Emmanuel from './Emmanuel.png';
 import Right from './quote-sign-right.png';
 import Left from './quote-sign-left.png';
+import Avatar from './avatar.png'
 
-export { Loginbg, Logo, Upload, LoginB, BG, Naom, Valentine, Sharon, Peter, Emmanuel, Right, Left};
+export { Loginbg, Logo, Upload, LoginB, BG, Naom, Valentine, Sharon, Peter, Emmanuel, Right, Left, Avatar};

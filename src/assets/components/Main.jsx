@@ -12,6 +12,7 @@ import Services from './pages/Services'
 import About from './pages/About'
 import Contact from './pages/Contact'
 import Testimonials from './pages/Testimonials'
+import Profile from './pages/Profile'
 
 const Main = () => {
   return (
@@ -29,6 +30,7 @@ const Main = () => {
           <Route path='/services' element={<Services/>}/>
           <Route path='/about' element={<About/>}/>
           <Route path='/testimonials' element={<Testimonials/>}/>
+          <Route path='/profile' element={<Profile/>}/>
         </Routes>
     </div>
   )
