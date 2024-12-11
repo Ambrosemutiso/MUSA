@@ -8,28 +8,29 @@ import AdminApproval from './AdminApproval';
 import AdminLoginSignup from './AdminLoginSignup';
 import Header from './Header';
 import Footer from './Footer';
+import Members from './Members';
 
 const Admin = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(null); // Start with null to show loading state
+  const [isLoggedIn, setIsLoggedIn] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem('admin-token');
     if (token) {
-      setIsLoggedIn(true); // Admin is logged in
+      setIsLoggedIn(true); 
     } else {
-      setIsLoggedIn(false); // Admin is not logged in
+      setIsLoggedIn(false); 
     }
   }, [navigate]);
 
   const handleLogin = (token) => {
     localStorage.setItem('admin-token', token);
     setIsLoggedIn(true);
-    navigate('/results'); // Redirect to the results page after login
+    navigate('/results'); 
   };
 
   if (isLoggedIn === null) {
-    return <div>Loading...</div>; // Loading state while checking login
+    return <div>Loading...</div>; 
   }
 
   return (
@@ -42,7 +43,6 @@ const Admin = () => {
               path="/adminlogin"
               element={<AdminLoginSignup onLogin={handleLogin} />}
             />
-            {/* Redirect all other routes to login if not logged in */}
             <Route path="*" element={<AdminLoginSignup onLogin={handleLogin} />} />
           </Routes>
         ) : (
@@ -54,7 +54,7 @@ const Admin = () => {
                 <Route path="/addcandidate" element={<AddCandidate />} />
                 <Route path="/listcandidates" element={<CandidatesList />} />
                 <Route path="/results" element={<Results />} />
-                {/* If admin is logged in, redirect login path to the results page */}
+                <Route path="/Chapterstatistics" element={<Members/>} />
                 <Route path="/adminlogin" element={<Results />} />
                 <Route path="*" element={<Results />} />
               </Routes>

@@ -6,7 +6,7 @@ const AdminLoginSignup = ({ onLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [isLoginMode, setIsLoginMode] = useState(true); // Toggle between login and signup
+  const [isLoginMode, setIsLoginMode] = useState(true); 
 
   // Handle Signup
   const handleSignup = async (e) => {
@@ -40,10 +40,8 @@ const AdminLoginSignup = ({ onLogin }) => {
       });
       const { token } = response.data;
 
-      // Store token in localStorage
       localStorage.setItem('admin-token', token);
 
-      // Call the onLogin callback to set login state
       onLogin(token);
     } catch (error) {
       const errorMsg = error.response?.data?.errors || error.message;
@@ -61,7 +59,6 @@ const AdminLoginSignup = ({ onLogin }) => {
 
         {error && <div className="text-red-500 mb-4">{error}</div>}
 
-        {/* Conditionally render adminName input only for signup */}
         {!isLoginMode && (
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="adminName">
@@ -73,7 +70,7 @@ const AdminLoginSignup = ({ onLogin }) => {
               value={adminName}
               onChange={(e) => setAdminName(e.target.value)}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              required={!isLoginMode} // required only during signup
+              required={!isLoginMode} 
             />
           </div>
         )}
@@ -118,7 +115,7 @@ const AdminLoginSignup = ({ onLogin }) => {
             onClick={() => setIsLoginMode(!isLoginMode)}
             className="text-blue-500 hover:text-blue-800 font-bold"
           >
-            {isLoginMode ? 'Switch to Signup' : 'Switch to Login'}
+            {isLoginMode ? 'Signup' : 'Login'}
           </button>
         </div>
       </form>
