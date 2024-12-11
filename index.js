@@ -16,7 +16,7 @@ require('dotenv').config();
 app.use(express.json());
 
 // CORS configuration
-const allowedOrigins = ['http://localhost:3000', 'https://admin.officialmusamakueni.co.ke'];
+const allowedOrigins = ['http://localhost:3000','https://user.officialmusamakueni.co.ke', 'https://admin.officialmusamakueni.co.ke', 'https://officialmusamakueni.co.ke'];
 
 const corsOptions = {
     origin: (origin, callback) => {
@@ -876,7 +876,49 @@ app.post('/adminlogin', async (req, res) => {
       res.status(500).json({ success: false, error: 'Server error' });
     }
   });
- 
+
+  // Middleware to verify the user's authentication token
+  const verifyAuthToken = (req, res, next) => {
+    const token = req.header('auth-token');
+    if (!token) return res.status(401).json({ message: 'Access Denied' });
+  
+    try {
+      const verified = jwt.verify(token, 'secret_ecom');
+      req.user = verified;
+      next();
+    } catch (err) {
+      res.status(400).json({ message: 'Invalid Token' });
+    }
+  };
+  
+  // Endpoint to get chapter statistics
+  app.get('/chapters', verifyAuthToken, async (req, res) => {
+    try {
+      const chapterData = await Users.aggregate([
+        {
+          $group: {
+            _id: '$chapter',
+            memberCount: { $sum: 1 },
+          },
+        },
+        {
+          $sort: { _id: 1 }, 
+        },
+      ]);
+  
+      // Format the data for frontend consumption
+      const formattedData = chapterData.map((chapter) => ({
+        name: chapter._id,
+        memberCount: chapter.memberCount,
+      }));
+  
+      res.status(200).json(formattedData);
+    } catch (err) {
+      console.error('Error fetching chapter data:', err);
+      res.status(500).json({ message: 'Failed to fetch chapter data' });
+    }
+  });
+  //server connection endpoint
   app.listen(port, (error) => {
     if (!error) {
         console.log("HTTP Server Running on Port " + port);
