@@ -15,10 +15,7 @@ const Members = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://api.officialmusamakueni.co.ke/chapters', {
-          headers: { 'auth-token': localStorage.getItem('auth-token') },
-        });
-
+        const response = await axios.get('https://api.officialmusamakueni.co.ke/chapters');
         const data = response.data;
         const total = data.reduce((sum, chapter) => sum + chapter.memberCount, 0);
 
